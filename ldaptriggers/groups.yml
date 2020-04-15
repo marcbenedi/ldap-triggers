@@ -1,9 +1,0 @@
-- !Group
-  cn: researchers
-  memberUid: []
-  gidNumber: '10000'
-- !Group
-  cn: students
-  memberUid:
-  - benedi
-  gidNumber: '10001'

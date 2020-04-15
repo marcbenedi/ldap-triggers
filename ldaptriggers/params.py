@@ -1,4 +1,4 @@
-LDAP_URI = 'ldap://vmniessner1.in.tum.de'
-LDAP_SECRET = '/etc/ldap.secret'
-
-PATH = '/home/marc/ldap-triggers/ldap-triggers/'
+PATH = '/etc/ldaptriggers/'
+PEOPLE_PATH = PATH + 'people.yaml'
+GROUPS_PATH = PATH + 'groups.yaml'
+CONFIG_PATH = PATH + 'config.yaml'

@@ -5,7 +5,7 @@ sys.path.append('.')
 import ldap
 from params import LDAP_URI
 from params import LDAP_SECRET
-from params import PATH
+from params import PATH, GROUPS_PATH, PEOPLE_PATH
 from model import Person, Group
 import ruamel.yaml
 
@@ -36,9 +36,9 @@ yaml.register_class(Group)
 old_people = []
 old_groups = []
 
-with open(PATH+'people.yml', 'r') as f:
+with open(PEOPLE_PATH, 'r') as f:
     old_people = yaml.load(f)
-with open(PATH+'groups.yml', 'r') as f:
+with open(GROUPS_PATH, 'r') as f:
     old_groups = yaml.load(f)
 
 con = ldap.initialize(LDAP_URI)
@@ -69,7 +69,7 @@ deleted_groups = diff_left(old_groups, groups)
 added_groups = diff_left(groups, old_groups)
 
 
-with open(PATH+'people.yml', 'w') as f:
+with open(PEOPLE_PATH, 'w') as f:
     yaml.dump(people, f)
-with open(PATH+'groups.yml', 'w') as f:
+with open(GROUPS_PATH, 'w') as f:
     yaml.dump(groups, f)
