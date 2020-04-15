@@ -1,12 +1,12 @@
 import click
-from .utils import initialize, sudo
-
+from .utils import initialize, sudo, fetch_ldap, store_to_yaml
+from .params import *
 
 @click.command()
 @click.option('--init', is_flag=True, help='Initializes configuration and directories. The default path is /etc/ldap-triggers')
 @click.option('-d', '--deamon', is_flag=True, help='Deamonizes ldap-triggers')
-@click.option('-s', '--sync', is_flag=True, help='Syncs with ldap server')
-def cli(init, deamon, sync):
+@click.option('-f', '--fetch', is_flag=True, help='Fetch ldap server and stores the info')
+def cli(init, deamon, fetch):
     """
     LDAPTRIGGERS is a tool that allows triggering some actions when an LDAP change is detected.\n
 
@@ -24,6 +24,7 @@ def cli(init, deamon, sync):
        initialize()
     if deamon:
         pass
-    if sync:
-        pass
-    
+    if fetch:
+        people, groups = fetch_ldap()
+        store_to_yaml(people, PEOPLE_PATH)
+        store_to_yaml(groups, GROUPS_PATH)
