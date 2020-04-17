@@ -23,11 +23,6 @@ class Person:
             self.groups == other.groups
         )
 
-#    def __hash__(self):
-#        return (
-#            hash(self.uid) ^ hash(self.homeDirectory) ^ hash(self.uidNumber) ^ hash(self.gidNumber) ^ hash(self.groups)
-#        )
-
     def __repr__(self):
         return """
             Person:
@@ -52,15 +47,10 @@ class Group:
         if not isinstance(other, Group):
             return NotImplemented
         return (
-            self.memberUid == other.memberUid and
+            #self.memberUid == other.memberUid and
             self.gidNumber == other.gidNumber and
             self.cn == other.cn
         )
-
-#    def __hash__(self):
-#        return (
-#            hash(self.memberUid) ^ hash(self.gidNumber) ^ hash(self.cn)
-#        )
 
     def __repr__(self):
         return """

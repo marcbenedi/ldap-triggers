@@ -18,3 +18,19 @@ con.unbind_s()
 ```
 pip install --editable .
 ```
+
+## Important paths
+Configuration /etc/ldaptriggers
+Logs /var/log/ldaptriggers.log
+
+## Future work
+Lock pid file in order to allow only one instance
+Add cli entry to kill daeomon 
+
+## Trigger
+
+/etc/ldaptriggers/triggers/
+
+create scripts with [action]_[entity]_[name of script].bash
+for example
+add_people_slurm.bash

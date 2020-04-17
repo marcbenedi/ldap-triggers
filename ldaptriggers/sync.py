@@ -1,23 +1,14 @@
-#!/home/marc/ldap-triggers/venv/bin/python 
 import sys
-sys.path.append('.')
 
 import ldap
-from params import LDAP_URI
-from params import LDAP_SECRET
-from params import PATH, GROUPS_PATH, PEOPLE_PATH
-from model import Person, Group
+
+from .params import PATH, GROUPS_PATH, PEOPLE_PATH
+from .model import Person, Group
+from .utils import fetch_ldap, store_to_yaml
+from .log import get_logger
+from .triggers import trigger
+
 import ruamel.yaml
-
-ORG = "dc=vc,dc=in,dc=tum,dc=de"
-ADMIN = "cn=admin," + ORG
-PEOPLE = "ou=people," + ORG
-GROUPS = "ou=groups," + ORG
-
-def get_ldap_password():
-    with open(LDAP_SECRET, 'r') as file:
-        password = file.read()
-    return password.rstrip()
 
 # TODO: Implement more efficiently
 def diff_left(l1, l2):
@@ -29,47 +20,36 @@ def diff_left(l1, l2):
 
     return diff
 
-yaml = ruamel.yaml.YAML()
-yaml.register_class(Person)
-yaml.register_class(Group)
+def sync():
 
-old_people = []
-old_groups = []
+    logger = get_logger()
 
-with open(PEOPLE_PATH, 'r') as f:
-    old_people = yaml.load(f)
-with open(GROUPS_PATH, 'r') as f:
-    old_groups = yaml.load(f)
+    yaml = ruamel.yaml.YAML()
+    yaml.register_class(Person)
+    yaml.register_class(Group)
 
-con = ldap.initialize(LDAP_URI)
+    old_people = []
+    old_groups = []
 
-password = get_ldap_password()
-con.bind_s(ADMIN, password, ldap.AUTH_SIMPLE)
+    # TODO: Extract read_from_yaml to utils function (also used in config)
+    with open(PEOPLE_PATH, 'r') as f:
+        old_people = yaml.load(f)
+    with open(GROUPS_PATH, 'r') as f:
+        old_groups = yaml.load(f)
 
-people = con.search_s(PEOPLE, ldap.SCOPE_SUBTREE, '(objectclass=person)')
-people = list(map(lambda p: Person(p), people))
-groups = con.search_s(GROUPS, ldap.SCOPE_SUBTREE, '(objectclass=posixGroup)')
-groups = list(map(lambda g: Group(g), groups))
+    people, groups = fetch_ldap()
 
-# Add extra groups to user
-for group in groups:
-    for memberUid in group.memberUid:
-        person = list(filter(lambda p: p.uid == memberUid, people))[0]
-        person.groups.append(group.gidNumber)
+    deleted_people = diff_left(old_people, people) 
+    added_people = diff_left(people, old_people)
+    deleted_groups = diff_left(old_groups, groups) 
+    added_groups = diff_left(groups, old_groups)
 
+    logger.info('Deleted people:' + str(deleted_people))
+    logger.info('Added people:' + str(added_people))
+    logger.info('Deleted groups:' + str(deleted_groups))
+    logger.info('Added groups:' + str(added_groups))
 
-con.unbind_s()
+    trigger(deleted_people, added_people, deleted_groups, added_groups)
 
-print(old_people == people)
-print(old_groups == groups)
-
-deleted_people = diff_left(old_people, people) 
-added_people = diff_left(people, old_people)
-deleted_groups = diff_left(old_groups, groups) 
-added_groups = diff_left(groups, old_groups)
-
-
-with open(PEOPLE_PATH, 'w') as f:
-    yaml.dump(people, f)
-with open(GROUPS_PATH, 'w') as f:
-    yaml.dump(groups, f)
+    store_to_yaml(people, PEOPLE_PATH)
+    store_to_yaml(groups, GROUPS_PATH)
