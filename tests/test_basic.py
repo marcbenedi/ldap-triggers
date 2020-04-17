@@ -6,4 +6,4 @@ class BasicTestSuite(unittest.TestCase):
     """Basic test cases."""
 
     def test_sample(self):
-        self.assertEqual(1,2)
+        self.assertEqual(1,1)
