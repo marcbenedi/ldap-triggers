@@ -16,6 +16,11 @@ pip install --editable .
 Configuration /etc/ldaptriggers
 Logs /var/log/ldaptriggers.log
 
+## Run tests
+```bash
+make tests
+```
+
 ## Trigger
 
 /etc/ldaptriggers/triggers/

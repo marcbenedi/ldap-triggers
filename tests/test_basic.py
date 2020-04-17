@@ -1,15 +1,9 @@
-from .context import ldap-triggers
-
 import unittest
 
+from .context import ldaptriggers
 
 class BasicTestSuite(unittest.TestCase):
     """Basic test cases."""
 
-    def sample_test(self):
-        assert True
-
-
-if __name__ == '__main__':
-    unittest.main()
-
+    def test_sample(self):
+        self.assertEqual(1,2)
