@@ -34,3 +34,9 @@ Add cli entry to kill daeomon
 create scripts with [action]_[entity]_[name of script].bash
 for example
 add_people_slurm.bash
+
+## License
+This software is avaialble under the following licenses:
+- MIT
+
+For more details check LICENSE file
