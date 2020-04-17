@@ -1,0 +1,6 @@
+- !Person
+  groups: []
+  uidNumber: '10000'
+  uid: employee01
+  gidNumber: '10000'
+  homeDirectory: /home/employee01
