@@ -44,12 +44,20 @@ def sync():
     deleted_groups = diff_left(old_groups, groups) 
     added_groups = diff_left(groups, old_groups)
 
-    logger.info('Deleted people:' + str(deleted_people))
-    logger.info('Added people:' + str(added_people))
-    logger.info('Deleted groups:' + str(deleted_groups))
-    logger.info('Added groups:' + str(added_groups))
+    #logger.info('Deleted people:' + str(deleted_people))
+    #logger.info('Added people:' + str(added_people))
+    #logger.info('Deleted groups:' + str(deleted_groups))
+    #logger.info('Added groups:' + str(added_groups))
 
-    trigger(deleted_people, added_people, deleted_groups, added_groups)
+    if (
+        len(deleted_people) == 0 and
+        len(added_people) == 0 and
+        len(deleted_groups) == 0 and
+        len(added_groups) == 0
+    ):
+        logger.info('No changes')
+    else:
+        trigger(deleted_people, added_people, deleted_groups, added_groups)
 
     store_to_yaml(people, PEOPLE_PATH)
     store_to_yaml(groups, GROUPS_PATH)

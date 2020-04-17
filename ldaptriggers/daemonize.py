@@ -14,4 +14,4 @@ def daemonize():
     with daemon.DaemonContext():
         while(True):
             sync()
-            time.sleep(10)
+            time.sleep(60)

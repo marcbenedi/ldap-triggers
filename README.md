@@ -31,7 +31,7 @@ Add cli entry to kill daeomon
 
 /etc/ldaptriggers/triggers/
 
-create scripts with [action]_[entity]_[name of script].bash
+create scripts with [action]\_[entity]\_[name of script].bash
 for example
 add_people_slurm.bash
 

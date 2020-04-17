@@ -4,6 +4,7 @@ from .utils import initialize, sudo, fetch_ldap, store_to_yaml
 from .params import *
 from .daemonize import daemonize
 from .sync import sync
+from . import signals
 
 @click.command()
 @click.option('-i', '--init', is_flag=True, help='Initializes configuration and directories. The default path is /etc/ldap-triggers')
