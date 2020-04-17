@@ -7,13 +7,6 @@ One of the requirements is python-ldap which is based on OpenLDAP, so you need t
 sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev
 ```
 
-ldapsearch -x  -b ou=groups,dc=vc,dc=in,dc=tum,dc=de -h vmniessner1.in.tum.de
-
-con.bind_s("cn=admin,dc=vc,dc=in,dc=tum,dc=de", "", ldap.AUTH_SIMPLE)
-con.search_s("ou=groups,dc=vc,dc=in,dc=tum,dc=de", ldap.SCOPE_SUBTREE, '(objectclass=posixGroup)')
-con.search_s("ou=people,dc=vc,dc=in,dc=tum,dc=de", ldap.SCOPE_SUBTREE, '(objectclass=person)')
-con.unbind_s()
-
 ## Installation
 ```
 pip install --editable .
@@ -22,10 +15,6 @@ pip install --editable .
 ## Important paths
 Configuration /etc/ldaptriggers
 Logs /var/log/ldaptriggers.log
-
-## Future work
-Lock pid file in order to allow only one instance
-Add cli entry to kill daeomon 
 
 ## Trigger
 
@@ -40,3 +29,8 @@ This software is avaialble under the following licenses:
 - MIT
 
 For more details check LICENSE file
+
+## Future work
+- Lock pid file in order to allow only one instance
+- Add cli entry to kill daeomon 
+- Sig handling does not always work (at least with SIGTERM)

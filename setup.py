@@ -11,7 +11,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='ldaptriggers',
-    version='0.2.0',
+    version='1.0.0',
     description='',
     long_description=readme,
     author='Marc Benedi',
