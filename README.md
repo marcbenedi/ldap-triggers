@@ -1,5 +1,7 @@
 # LDAP-triggers
 
+![Tests](https://github.com/marcbenedi/ldap-triggers/workflows/Tests/badge.svg)
+
 > This project is hosted at https://github.com/marcbenedi/ldap-triggers .
 
 ## Setup
