@@ -44,7 +44,7 @@ def trigger(deleted_people, added_people, deleted_groups, added_groups):
 
     for p in added_people:
         for f in add_people_triggers:
-            rc = subprocess.call(TRIGGERS_PATH + f + ' ' + str(p.uid), shell=True)
+            rc = subprocess.call(TRIGGERS_PATH + f + ' ' + str(p.uid) + ' ' + str(p.groupName) + ' ' + " ".join(p.groups), shell=True)
             if rc != 0:
                 logger.error(f + ' | ' + p.uid + ' | ' + str(rc))
             else:

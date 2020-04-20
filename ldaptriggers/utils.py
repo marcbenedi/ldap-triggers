@@ -45,12 +45,18 @@ def fetch_ldap():
     groups = con.search_s(config.groups, ldap.SCOPE_SUBTREE, '(objectclass=posixGroup)')
     groups = list(map(lambda g: Group(g), groups))
 
+    # TODO: Maybe ldap query can be tuned to return this information
+
+    # Map person gidNumber to groupName
+    for p in people:
+        group = list(filter(lambda g: g.gidNumber == p.gidNumber, groups))[0]
+        p.groupName = group.cn
+
     # Add extra groups to user
     for group in groups:
         for memberUid in group.memberUid:
             person = list(filter(lambda p: p.uid == memberUid, people))[0]
-            person.groups.append(group.gidNumber)
-
+            person.groups.append(group.cn)
 
     con.unbind_s()
     
@@ -66,7 +72,7 @@ def initialize():
     Creates the required directories.
     """
     print("Creating directory /etc/ldaptriggers/")
-    Path(PATH).mkdir(parents=True, exist_ok=True)
+    Path(TRIGGERS_PATH).mkdir(parents=True, exist_ok=True)
     # Create config file
     print("The following propmpts will configure /etc/ldaptriggers/config.yaml")
     config.ldap_uri = click.prompt('Enter ldap server uri', default='ldap://localhost')

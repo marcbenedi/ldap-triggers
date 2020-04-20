@@ -9,6 +9,7 @@ class Person:
         self.homeDirectory = info['homeDirectory'][0].decode(ENCODING)
         self.uidNumber = info['uidNumber'][0].decode(ENCODING)
         self.gidNumber = info['gidNumber'][0].decode(ENCODING)
+        self.groupName = None
 
         self.groups = []
 
@@ -19,7 +20,8 @@ class Person:
             self.uid == other.uid and 
             self.homeDirectory == other.homeDirectory and 
             self.uidNumber == other.uidNumber and 
-            self.gidNumber == other.gidNumber and 
+            self.gidNumber == other.gidNumber and
+            self.groupName == other.groupName and 
             self.groups == other.groups
         )
 
@@ -30,8 +32,9 @@ class Person:
                 homeDirectory: {homeDirectory}
                 uidNumber: {uidNumber}
                 gidNumber: {gidNumber}
+                groupName: {groupName}
                 groups: {groups}
-        """.format(uid=self.uid, homeDirectory=self.homeDirectory, uidNumber=self.uidNumber, gidNumber=self.gidNumber, groups=str(self.groups))
+        """.format(uid=self.uid, homeDirectory=self.homeDirectory, uidNumber=self.uidNumber, gidNumber=self.gidNumber, groupName=self.groupName, groups=str(self.groups))
 
 class Group:
     def __init__(self, tuple):
