@@ -39,7 +39,6 @@ For more details check LICENSE file
 
 ## Future work
 - Check it works when groups and people are empty
-- Mkdir triggers
 - Lock pid file in order to allow only one instance
 - Add cli entry to kill daeomon 
 - Sig handling does not always work (at least with SIGTERM)
