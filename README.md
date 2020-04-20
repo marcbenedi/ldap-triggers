@@ -44,3 +44,4 @@ For more details check LICENSE file
 - Add cli entry to kill daeomon 
 - Sig handling does not always work (at least with SIGTERM)
 - Add cli to create file to be runned by systemd
+- specify behaviour when the trigger fails
