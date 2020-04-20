@@ -27,13 +27,13 @@ def cli(init, daemon, fetch, clear):
     sudo()
     if init:
        initialize()
-    if daemon:
+    elif daemon:
         daemonize()
-    if fetch:
+    elif fetch:
         people, groups = fetch_ldap()
         store_to_yaml(people, PEOPLE_PATH)
         store_to_yaml(groups, GROUPS_PATH)
-    if clear:
+    elif clear:
         pass
     else:
         # run in foreground
