@@ -38,6 +38,7 @@ This software is avaialble under the following licenses:
 For more details check LICENSE file
 
 ## Future work
+- Check it works when groups and people are empty
 - Mkdir triggers
 - Lock pid file in order to allow only one instance
 - Add cli entry to kill daeomon 
