@@ -22,6 +22,9 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
+        apt-get install gcc libpq-dev -y
+        apt-get install python3-dev python3-pip python3-venv python3-wheel -y
+        apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install --editable .
