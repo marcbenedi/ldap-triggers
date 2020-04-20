@@ -10,42 +10,27 @@ def trigger(deleted_people, added_people, deleted_groups, added_groups):
 
     triggers = os.listdir(TRIGGERS_PATH)
 
+    # TODO: make this more efficient
     add_people_triggers = list(filter(lambda f: f.startswith("add_people_"), triggers))
     delete_people_triggers = list(filter(lambda f: f.startswith("delete_people_"), triggers))
 
     add_groups_triggers = list(filter(lambda f: f.startswith("add_groups_"), triggers))
     delete_groups_triggers = list(filter(lambda f: f.startswith("delete_groups_"), triggers))
 
-    # TODO: remove code duplication
-    for p in deleted_people:
-        for f in delete_people_triggers:
-            rc = subprocess.call(TRIGGERS_PATH + f + ' ' + str(p.uid), shell=True)
-            if rc != 0:
-                logger.error(f + ' | ' + p.uid + ' | ' + str(rc))
-            else:
-                logger.info(f + ' | ' + p.uid + ' | ' + str(rc))
+    get_param_person = lambda p: str(p.uid)
+    get_param_group = lambda g: str(g.cn)
+    get_param_person_group = lambda p: str(p.uid) + ' ' + str(p.groupName) + ' ' + " ".join(p.groups)
 
-    for g in deleted_groups:
-        for f in delete_groups_triggers:
-            rc = subprocess.call(TRIGGERS_PATH + f + ' ' + str(g.cn), shell=True)
-            if rc != 0:
-                logger.error(f + ' | ' + g.cn + ' | ' + str(rc))
-            else:
-                logger.info(f + ' | ' + g.cn + ' | ' + str(rc))
+    def call_trigger(entities, triggers, get_param):
+        for e in entities:
+            for t in triggers:
+                rc = subprocess.call(TRIGGERS_PATH + t + ' ' + get_param(e), shell=True)
+                if rc != 0:
+                    logger.error(f + ' | ' + get_param(e) + ' | ' + str(rc))
+                else:
+                    logger.info(f + ' | ' + get_param(e) + ' | ' + str(rc))
 
-    for g in added_groups:
-        for f in add_groups_triggers:
-            rc = subprocess.call(TRIGGERS_PATH + f + ' ' + str(g.cn), shell=True)
-            if rc != 0:
-                logger.error(f + ' | ' + g.cn + ' | ' + str(rc))
-            else:
-                logger.info(f + ' | ' + g.cn + ' | ' + str(rc))
-
-    for p in added_people:
-        for f in add_people_triggers:
-            rc = subprocess.call(
-                TRIGGERS_PATH + f + ' ' + str(p.uid) + ' ' + str(p.groupName) + ' ' + " ".join(p.groups), shell=True)
-            if rc != 0:
-                logger.error(f + ' | ' + p.uid + ' | ' + str(rc))
-            else:
-                logger.info(f + ' | ' + p.uid + ' | ' + str(rc))
+    call_trigger(deleted_people, delete_people_triggers, get_param_person)
+    call_trigger(deleted_groups, delete_groups_triggers, get_param_group)
+    call_trigger(added_groups, add_groups_triggers, get_param_group)
+    call_trigger(added_people, add_people_triggers, get_param_person_group)
