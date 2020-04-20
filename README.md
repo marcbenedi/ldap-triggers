@@ -29,7 +29,7 @@ At the moment this package is not available in *pip* repositories. To install it
 ```
 $ git clone https://github.com/marcbenedi/ldap-triggers
 $ cd ldap-triggers
-$ # Create virtual environment with your preferred tool
+$ virtualenv -p python3 venv
 $ pip install -r requirements.txt
 $ pip install --editable .
 ```

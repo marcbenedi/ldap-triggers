@@ -1,7 +1,9 @@
 from pathlib import Path
+import ruamel.yaml
 
 from .params import CONFIG_PATH
-from .utils import read_from_yaml, store_to_yaml
+
+yaml = ruamel.yaml.YAML()
 
 
 class Config:
@@ -30,7 +32,8 @@ class Config:
         """
         Stores the current configuration in CONFIG_PATH
         """
-        store_to_yaml(self, CONFIG_PATH)
+        with open(CONFIG_PATH, 'w') as f:
+            yaml.dump(self, f)
 
     def load(self):
         """
@@ -39,7 +42,8 @@ class Config:
         stored_config = Path(CONFIG_PATH)
 
         if stored_config.is_file():
-            stored_config = read_from_yaml(CONFIG_PATH)
+            with open(CONFIG_PATH, 'r') as f:
+                stored_config = yaml.load(f)
 
             self.ldap_uri = stored_config.ldap_uri
             self.ldap_secret = stored_config.ldap_secret
@@ -49,6 +53,8 @@ class Config:
             self.groups = stored_config.groups
             self.timeout = stored_config.timeout
 
+
+yaml.register_class(Config)
 
 config = Config()
 """

@@ -6,7 +6,7 @@ import ldap
 import ruamel.yaml
 
 from .params import *
-from .config import config
+from .config import config, Config
 from .model import Person, Group
 
 yaml = ruamel.yaml.YAML()
