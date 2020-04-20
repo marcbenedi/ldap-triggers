@@ -4,6 +4,8 @@
 
 One of the requirements is python-ldap which is based on OpenLDAP, so you need to have the developemnt files (headers) in order to compile the Python module
 ```
+sudo apt-get install gcc libpq-dev -y
+sudo apt-get install python3-dev python3-pip python3-venv python3-wheel -y
 sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev
 ```
 
