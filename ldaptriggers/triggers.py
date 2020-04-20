@@ -34,9 +34,9 @@ def trigger(deleted_people, added_people, deleted_groups, added_groups):
             for t in triggers:
                 rc = subprocess.call(TRIGGERS_PATH + t + ' ' + get_param(e), shell=True)
                 if rc != 0:
-                    logger.error(f + ' | ' + get_param(e) + ' | ' + str(rc))
+                    logger.error(t + ' | ' + get_param(e) + ' | ' + str(rc))
                 else:
-                    logger.info(f + ' | ' + get_param(e) + ' | ' + str(rc))
+                    logger.info(t + ' | ' + get_param(e) + ' | ' + str(rc))
 
     call_trigger(deleted_people, delete_people_triggers, get_param_person)
     call_trigger(deleted_groups, delete_groups_triggers, get_param_group)
