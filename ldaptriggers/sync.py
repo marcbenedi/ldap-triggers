@@ -11,6 +11,12 @@ from .triggers import trigger
 
 # TODO: Implement more efficiently
 def diff_left(l1, l2):
+    """
+    Computes which elements are in l1 but not in l2
+    :param l1: Array
+    :param l2: Array
+    :return: diff -> Array
+    """
     diff = l1.copy()
     for e2 in l2:
         for e1 in l1:
@@ -21,6 +27,13 @@ def diff_left(l1, l2):
 
 
 def sync():
+    """
+    Fetches the LDAP server.
+    Computes which users and groups have been deleted or added.
+    Calls triggers.
+    Stores current LDAP server status into PATH.
+    :return
+    """
     logger = get_logger()
 
     old_people = read_from_yaml(PEOPLE_PATH)

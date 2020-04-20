@@ -5,6 +5,11 @@ from .log import get_logger
 
 
 def signal_handler(sig, frame):
+    """
+    Logs the signal received into LOG_PATH
+    :param sig: signal that has been called
+    :param frame:
+    """
     logger = get_logger()
     logger.warn('Signal received: ' + signal.Signals(sig).name)
     sys.exit(0)

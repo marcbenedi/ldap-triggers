@@ -17,7 +17,7 @@ yaml.register_class(Config)
 
 def sudo():
     """
-    Check that the program is running as root, otherwise asks for permissions and runs again.
+    Checks that the program is running as root, otherwise asks for permissions and it runs again.
     """
     euid = os.geteuid()
     if euid != 0:
@@ -29,6 +29,10 @@ def sudo():
 
 
 def get_ldap_password():
+    """
+    Reads the content of config.ldap_secret file
+    :return: String
+    """
     with open(config.ldap_secret, 'r') as file:
         password = file.read()
     return password.rstrip()
@@ -36,7 +40,7 @@ def get_ldap_password():
 
 def fetch_ldap():
     """
-    Fetched LDAP server information
+    Fetches LDAP server information
     """
     con = ldap.initialize(config.ldap_uri)
     password = get_ldap_password()
@@ -66,12 +70,23 @@ def fetch_ldap():
 
 
 def store_to_yaml(object, path):
+    """
+    Writes the Python object as YAML in path
+    :param object: Python object
+    :param path: String
+    :return:
+    """
     print("Writing to %s" % path)
     with open(path, 'w') as f:
         yaml.dump(object, f)
 
 
 def read_from_yaml(path):
+    """
+    Restores the Python object stored in path as YAML
+    :param path: String
+    :return: Python object
+    """
     with open(path, 'r') as f:
         object = yaml.load(f)
     return object
@@ -79,7 +94,7 @@ def read_from_yaml(path):
 
 def initialize():
     """
-    Creates the required directories.
+    Creates the required directories and initializes config
     """
     print("Creating directory /etc/ldaptriggers/")
     Path(TRIGGERS_PATH).mkdir(parents=True, exist_ok=True)

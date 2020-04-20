@@ -6,6 +6,14 @@ from .log import get_logger
 
 
 def trigger(deleted_people, added_people, deleted_groups, added_groups):
+    """
+    Fetches the stored triggers in TRIGGERS_PATH and executes them.
+    :param deleted_people: Array
+    :param added_people: Array
+    :param deleted_groups: Array
+    :param added_groups: Array
+    :return:
+    """
     logger = get_logger()
 
     triggers = os.listdir(TRIGGERS_PATH)
