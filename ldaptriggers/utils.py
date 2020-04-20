@@ -9,7 +9,6 @@ from .params import *
 from .config import config
 from .model import Person, Group
 
-
 yaml = ruamel.yaml.YAML()
 yaml.register_class(Person)
 yaml.register_class(Group)
@@ -23,14 +22,16 @@ def sudo():
     if euid != 0:
         print("Script not started as root. Running sudo...")
         args = ['sudo', sys.executable] + sys.argv + [os.environ]
-        os.execlpe('sudo', *args) # Replaces the current process with the sudo
+        os.execlpe('sudo', *args)  # Replaces the current process with the sudo
 
     print("Running as sudo")
+
 
 def get_ldap_password():
     with open(config.ldap_secret, 'r') as file:
         password = file.read()
     return password.rstrip()
+
 
 def fetch_ldap():
     """
@@ -59,13 +60,15 @@ def fetch_ldap():
             person.groups.append(group.cn)
 
     con.unbind_s()
-    
+
     return people, groups
 
+
 def store_to_yaml(object, path):
-    print("Writing to %s"%path)
+    print("Writing to %s" % path)
     with open(path, 'w') as f:
         yaml.dump(object, f)
+
 
 def initialize():
     """
@@ -77,7 +80,7 @@ def initialize():
     print("The following propmpts will configure /etc/ldaptriggers/config.yaml")
     config.ldap_uri = click.prompt('Enter ldap server uri', default='ldap://localhost')
     config.ldap_secret = click.prompt('Enter ldap server secret', default='/etc/ldap.secret')
-    config.org = click.prompt('Enter ldap organization', default='dc=vc,dc=in,dc=tum,dc=de')  
+    config.org = click.prompt('Enter ldap organization', default='dc=vc,dc=in,dc=tum,dc=de')
     config.admin = click.prompt('Enter admin', default='cn=admin,') + config.org
     config.people = click.prompt('Enter people', default='ou=people,') + config.org
     config.groups = click.prompt('Enter groups', default='ou=groups,') + config.org

@@ -1,8 +1,8 @@
 ENCODING = 'utf-8'
 
+
 class Person:
     def __init__(self, tuple):
-
         info = tuple[1]
 
         self.uid = info['uid'][0].decode(ENCODING)
@@ -17,12 +17,12 @@ class Person:
         if not isinstance(other, Person):
             return NotImplemented
         return (
-            self.uid == other.uid and 
-            self.homeDirectory == other.homeDirectory and 
-            self.uidNumber == other.uidNumber and 
-            self.gidNumber == other.gidNumber and
-            self.groupName == other.groupName and 
-            self.groups == other.groups
+                self.uid == other.uid and
+                self.homeDirectory == other.homeDirectory and
+                self.uidNumber == other.uidNumber and
+                self.gidNumber == other.gidNumber and
+                self.groupName == other.groupName and
+                self.groups == other.groups
         )
 
     def __repr__(self):
@@ -34,11 +34,12 @@ class Person:
                 gidNumber: {gidNumber}
                 groupName: {groupName}
                 groups: {groups}
-        """.format(uid=self.uid, homeDirectory=self.homeDirectory, uidNumber=self.uidNumber, gidNumber=self.gidNumber, groupName=self.groupName, groups=str(self.groups))
+        """.format(uid=self.uid, homeDirectory=self.homeDirectory, uidNumber=self.uidNumber, gidNumber=self.gidNumber,
+                   groupName=self.groupName, groups=str(self.groups))
+
 
 class Group:
     def __init__(self, tuple):
-
         info = tuple[1]
 
         self.memberUid = info.setdefault('memberUid', [])
@@ -50,9 +51,9 @@ class Group:
         if not isinstance(other, Group):
             return NotImplemented
         return (
-            #self.memberUid == other.memberUid and
-            self.gidNumber == other.gidNumber and
-            self.cn == other.cn
+            # self.memberUid == other.memberUid and
+                self.gidNumber == other.gidNumber and
+                self.cn == other.cn
         )
 
     def __repr__(self):

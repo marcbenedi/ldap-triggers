@@ -10,26 +10,24 @@ from .triggers import trigger
 
 import ruamel.yaml
 
+
 # TODO: Implement more efficiently
 def diff_left(l1, l2):
     diff = l1.copy()
     for e2 in l2:
-        for e1 in l1: 
+        for e1 in l1:
             if e1 == e2:
                 diff.remove(e1)
 
     return diff
 
-def sync():
 
+def sync():
     logger = get_logger()
 
     yaml = ruamel.yaml.YAML()
     yaml.register_class(Person)
     yaml.register_class(Group)
-
-    old_people = []
-    old_groups = []
 
     # TODO: Extract read_from_yaml to utils function (also used in config)
     with open(PEOPLE_PATH, 'r') as f:
@@ -39,21 +37,16 @@ def sync():
 
     people, groups = fetch_ldap()
 
-    deleted_people = diff_left(old_people, people) 
+    deleted_people = diff_left(old_people, people)
     added_people = diff_left(people, old_people)
-    deleted_groups = diff_left(old_groups, groups) 
+    deleted_groups = diff_left(old_groups, groups)
     added_groups = diff_left(groups, old_groups)
 
-    #logger.info('Deleted people:' + str(deleted_people))
-    #logger.info('Added people:' + str(added_people))
-    #logger.info('Deleted groups:' + str(deleted_groups))
-    #logger.info('Added groups:' + str(added_groups))
-
     if (
-        len(deleted_people) == 0 and
-        len(added_people) == 0 and
-        len(deleted_groups) == 0 and
-        len(added_groups) == 0
+            len(deleted_people) == 0 and
+            len(added_people) == 0 and
+            len(deleted_groups) == 0 and
+            len(added_groups) == 0
     ):
         logger.info('No changes')
     else:

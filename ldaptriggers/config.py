@@ -6,13 +6,12 @@ from .params import CONFIG_PATH
 
 class Config:
     def __init__(self):
-        self.ldap_uri = 'ldap://vmniessner1.in.tum.de'        
+        self.ldap_uri = 'ldap://localhost'
         self.ldap_secret = '/etc/ldap.secret'
-        self.org = "dc=vc,dc=in,dc=tum,dc=de"
+        self.org = "dc=org,dc=company,dc=com"
         self.admin = "cn=admin," + self.org
         self.people = "ou=people," + self.org
         self.groups = "ou=groups," + self.org
-
 
         self.load()
 
@@ -32,8 +31,8 @@ class Config:
                 self.people = stored_config.people
                 self.groups = stored_config.groups
 
+
 yaml = ruamel.yaml.YAML()
 yaml.register_class(Config)
-
 
 config = Config()
