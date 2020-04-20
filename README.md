@@ -1,5 +1,18 @@
 # LDAP-triggers
 
+> This project is hosted at https://github.com/marcbenedi/ldap-triggers .
+
+## Setup
+
+```bash
+$ ldaptriggers --init
+# Follow instructions to set it up
+
+$ ldaptriggers --daemon
+# Or if you want to debug running it in foreground is recommended
+$ ldaptriggers
+```
+
 ## Dependencies
 
 One of the requirements is python-ldap which is based on OpenLDAP, so you need to have the developemnt files (headers) in order to compile the Python module
@@ -10,26 +23,48 @@ sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev
 ```
 
 ## Installation
+
+At the moment this package is not available in *pip* repositories. To install it, create a virtual environment and install the requirements.
+
 ```
-pip install --editable .
+$ git clone https://github.com/marcbenedi/ldap-triggers
+$ cd ldap-triggers
+$ # Create virtual environment with your preferred tool
+$ pip install -r requirements.txt
+$ pip install --editable .
 ```
 
 ## Important paths
-Configuration /etc/ldaptriggers
-Logs /var/log/ldaptriggers.log
+Configuration files are stored in `/etc/ldaptriggers/`
+
+The triggers are stored in `/etc/ldaptriggers/triggers`
+
+Logs are stored in `/var/log/ldaptriggers.log`
 
 ## Run tests
 ```bash
 make tests
 ```
 
-## Trigger
+## Triggers
 
-/etc/ldaptriggers/triggers/
+Triggers are stored in `/etc/ldaptriggers/triggers/`
 
-create scripts with [action]\_[entity]\_[name of script].bash
-for example
-add_people_slurm.bash
+You can see some examples in this repository under `examples/triggers`
+
+The name of the file is very important. It has to follow this pattern:
+
+**[action]\_[entity]\_[name of script].bash**
+
+For example, if we want a trigger to be executed when a user is added, it has to have the following name:
+
+**add_people_send_email.bash**
+
+If instead, we want a trigger when a group is deleted, it has to have the following name:
+
+**delete_group_delete_shared_folder.bash**
+
+> It is important that the triggers are executable by the root user, as the daemon is run by root
 
 ## License
 This software is avaialble under the following licenses:
@@ -38,4 +73,9 @@ This software is avaialble under the following licenses:
 For more details check LICENSE file
 
 ## Future work
+
 Check the [project's board](https://github.com/marcbenedi/ldap-triggers/projects/) for more information and track current status. 
+
+## Contributing
+
+Check out [CONTRIBUTING.md](https://github.com/marcbenedi/ldap-triggers/blob/master/CONTRIBUTING.md) for more information.

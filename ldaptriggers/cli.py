@@ -6,11 +6,16 @@ from .daemonize import daemonize
 from .sync import sync
 from . import signals
 
+
 @click.command()
-@click.option('-i', '--init', is_flag=True, help='Initializes configuration and directories. The default path is /etc/ldaptriggers/')
-@click.option('-d', '--daemon', is_flag=True, help='Starts the program as a daemon.')
-@click.option('-f', '--fetch', is_flag=True, help='Fetches ldap server and stores the info in people.yaml and groups.yaml but it does not execute any trigger.')
-@click.option('-c', '--clear', is_flag=True, help='Clears all files from /etc/ldaptriggers/ and logs from /var/log/ldaptriggers.log. Calling it with --init will be required next time.')
+@click.option('-i', '--init', is_flag=True,
+              help='Initializes configuration and directories. The default path is /etc/ldaptriggers.')
+@click.option('-d', '--daemon', is_flag=True,
+              help='Starts the program as a daemon.')
+@click.option('-f', '--fetch', is_flag=True,
+              help='Fetches ldap server and stores the info in people.yaml and groups.yaml but it does not execute any trigger.')
+@click.option('-c', '--clear', is_flag=True,
+              help='Clears all files from /etc/ldaptriggers/ and logs from /var/log/ldaptriggers.log. Calling it with --init will be required next time.')
 def cli(init, daemon, fetch, clear):
     """
     LDAPTRIGGERS is a tool that allows triggering some actions when an LDAP change is detected.\n
@@ -26,7 +31,7 @@ def cli(init, daemon, fetch, clear):
     """
     sudo()
     if init:
-       initialize()
+        initialize()
     elif daemon:
         daemonize()
     elif fetch:
@@ -37,6 +42,6 @@ def cli(init, daemon, fetch, clear):
         pass
     else:
         # run in foreground
-        while(True):
+        while True:
             sync()
-            time.sleep(10)
+            time.sleep(TIMEOUT_DEBUG)

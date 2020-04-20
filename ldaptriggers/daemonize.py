@@ -8,10 +8,11 @@ import daemon
 import time
 
 from .sync import sync
+from .config import config
 
 
 def daemonize():
     with daemon.DaemonContext():
         while True:
             sync()
-            time.sleep(60)
+            time.sleep(config.timeout)

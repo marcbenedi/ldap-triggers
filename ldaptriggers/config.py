@@ -1,7 +1,7 @@
-import ruamel.yaml
 from pathlib import Path
 
 from .params import CONFIG_PATH
+from .utils import read_from_yaml, store_to_yaml
 
 
 class Config:
@@ -12,27 +12,26 @@ class Config:
         self.admin = "cn=admin," + self.org
         self.people = "ou=people," + self.org
         self.groups = "ou=groups," + self.org
+        self.timeout = 60
 
         self.load()
 
     def save(self):
-        with open(CONFIG_PATH, 'w') as f:
-            yaml.dump(self, f)
+        store_to_yaml(self, CONFIG_PATH)
 
     def load(self):
         stored_config = Path(CONFIG_PATH)
+
         if stored_config.is_file():
-            with open(CONFIG_PATH, 'r') as f:
-                stored_config = yaml.load(f)
-                self.ldap_uri = stored_config.ldap_uri
-                self.ldap_secret = stored_config.ldap_secret
-                self.org = stored_config.org
-                self.admin = stored_config.admin
-                self.people = stored_config.people
-                self.groups = stored_config.groups
+            stored_config = read_from_yaml(CONFIG_PATH)
 
+            self.ldap_uri = stored_config.ldap_uri
+            self.ldap_secret = stored_config.ldap_secret
+            self.org = stored_config.org
+            self.admin = stored_config.admin
+            self.people = stored_config.people
+            self.groups = stored_config.groups
+            self.timeout = stored_config.timeout
 
-yaml = ruamel.yaml.YAML()
-yaml.register_class(Config)
 
 config = Config()

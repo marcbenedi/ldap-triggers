@@ -12,11 +12,12 @@ from .model import Person, Group
 yaml = ruamel.yaml.YAML()
 yaml.register_class(Person)
 yaml.register_class(Group)
+yaml.register_class(Config)
 
 
 def sudo():
     """
-    Check that the program is running as root, otherwise asks for permisions and runs again.
+    Check that the program is running as root, otherwise asks for permissions and runs again.
     """
     euid = os.geteuid()
     if euid != 0:
@@ -70,21 +71,30 @@ def store_to_yaml(object, path):
         yaml.dump(object, f)
 
 
+def read_from_yaml(path):
+    with open(path, 'r') as f:
+        object = yaml.load(f)
+    return object
+
+
 def initialize():
     """
     Creates the required directories.
     """
     print("Creating directory /etc/ldaptriggers/")
     Path(TRIGGERS_PATH).mkdir(parents=True, exist_ok=True)
+
     # Create config file
-    print("The following propmpts will configure /etc/ldaptriggers/config.yaml")
+    print("The following prompts will configure /etc/ldaptriggers/config.yaml")
     config.ldap_uri = click.prompt('Enter ldap server uri', default='ldap://localhost')
     config.ldap_secret = click.prompt('Enter ldap server secret', default='/etc/ldap.secret')
     config.org = click.prompt('Enter ldap organization', default='dc=vc,dc=in,dc=tum,dc=de')
     config.admin = click.prompt('Enter admin', default='cn=admin,') + config.org
     config.people = click.prompt('Enter people', default='ou=people,') + config.org
     config.groups = click.prompt('Enter groups', default='ou=groups,') + config.org
+    config.timeout = click.prompt('Enter sync time', default=60)
     config.save()
+
     # Create first ldap record
     sync = click.prompt('Do you want to sync with ldap now?', type=click.Choice(['Y', 'n']))
     if sync == 'Y':
@@ -92,4 +102,3 @@ def initialize():
         people, groups = fetch_ldap()
         store_to_yaml(people, PEOPLE_PATH)
         store_to_yaml(groups, GROUPS_PATH)
-    return None

@@ -5,3 +5,5 @@ CONFIG_PATH = PATH + 'config.yaml'
 LOG_PATH = '/var/log/ldaptriggers.log'
 
 TRIGGERS_PATH = PATH + 'triggers/'
+
+TIMEOUT_DEBUG = 10

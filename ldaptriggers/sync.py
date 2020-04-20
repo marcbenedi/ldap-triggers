@@ -4,11 +4,9 @@ import ldap
 
 from .params import PATH, GROUPS_PATH, PEOPLE_PATH
 from .model import Person, Group
-from .utils import fetch_ldap, store_to_yaml
+from .utils import fetch_ldap, store_to_yaml, read_from_yaml
 from .log import get_logger
 from .triggers import trigger
-
-import ruamel.yaml
 
 
 # TODO: Implement more efficiently
@@ -25,15 +23,8 @@ def diff_left(l1, l2):
 def sync():
     logger = get_logger()
 
-    yaml = ruamel.yaml.YAML()
-    yaml.register_class(Person)
-    yaml.register_class(Group)
-
-    # TODO: Extract read_from_yaml to utils function (also used in config)
-    with open(PEOPLE_PATH, 'r') as f:
-        old_people = yaml.load(f)
-    with open(GROUPS_PATH, 'r') as f:
-        old_groups = yaml.load(f)
+    old_people = read_from_yaml(PEOPLE_PATH)
+    old_groups = read_from_yaml(GROUPS_PATH)
 
     people, groups = fetch_ldap()
 
