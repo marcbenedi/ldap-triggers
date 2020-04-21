@@ -1,5 +1,8 @@
+ENCODING='utf-8'
+
 import os
-import subprocess
+from subprocess import Popen, PIPE
+
 
 from .params import TRIGGERS_PATH
 from .log import get_logger
@@ -25,18 +28,20 @@ def trigger(deleted_people, added_people, deleted_groups, added_groups):
     add_groups_triggers = list(filter(lambda f: f.startswith("add_groups_"), triggers))
     delete_groups_triggers = list(filter(lambda f: f.startswith("delete_groups_"), triggers))
 
-    get_param_person = lambda p: str(p.uid)
-    get_param_group = lambda g: str(g.cn)
-    get_param_person_group = lambda p: str(p.uid) + ' ' + str(p.groupName) + ' ' + " ".join(p.groups)
+    get_param_person = lambda p: [str(p.uid)]
+    get_param_group = lambda g: [str(g.cn)]
+    get_param_person_group = lambda p: [str(p.uid), str(p.groupName)] +  p.groups
 
     def call_trigger(entities, triggers, get_param):
         for e in entities:
             for t in triggers:
-                rc = subprocess.call(TRIGGERS_PATH + t + ' ' + get_param(e), shell=True)
+                p = Popen([TRIGGERS_PATH + t] + get_param(e), stdin=PIPE, stdout=PIPE, stderr=PIPE)
+                output, err = p.communicate("")
+                rc = p.returncode
                 if rc != 0:
-                    logger.error(t + ' | ' + get_param(e) + ' | ' + str(rc))
+                    logger.error(t + ' | ' + str(get_param(e)) + ' | ' + str(rc) + ' | ' + err.decode(ENCODING))
                 else:
-                    logger.info(t + ' | ' + get_param(e) + ' | ' + str(rc))
+                    logger.info(t + ' | ' + str(get_param(e)) + ' | ' + str(rc) + ' | ' + output.decode(ENCODING))
 
     call_trigger(deleted_people, delete_people_triggers, get_param_person)
     call_trigger(deleted_groups, delete_groups_triggers, get_param_group)
