@@ -26,8 +26,9 @@ def cli(init, daemon, fetch, clear):
     Actions supported: \n
         - Add \n
         - Remove \n
+        - Modify \n
 
-    For example: If a User is modified, LDAPTRIGGERS would trigger Remove of that user and Add of the user (with the changes)    
+    For Add/Remove the fields gidNumber/uidNumber are checked for Groups/Users respectively.
     """
     sudo()
     if init:

@@ -66,6 +66,10 @@ If instead, we want a trigger when a group is deleted, it has to have the follow
 
 **delete_group_delete_shared_folder.bash**
 
+Or when a group is modified:
+
+**modify_group_update_name.bash**
+
 > It is important that the triggers are executable by the root user, as the daemon is run by root
 
 ## License

@@ -1,8 +1,5 @@
 - !Group
-  gidNumber: '10000'
-  cn: software
-  memberUid: []
-- !Group
-  gidNumber: '10001'
-  cn: hardware
-  memberUid: []
+  memberUid:
+  - username
+  gidNumber: '10006'
+  cn: manager

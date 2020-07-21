@@ -1,8 +1,7 @@
-ENCODING='utf-8'
+ENCODING = 'utf-8'
 
 import os
 from subprocess import Popen, PIPE
-
 
 from .params import TRIGGERS_PATH
 from .log import get_logger
@@ -34,7 +33,7 @@ def trigger(deleted_people, added_people, deleted_groups, added_groups, modified
 
     get_param_person = lambda p: [str(p.uid)]
     get_param_group = lambda g: [str(g.cn), str(g.gidNumber)]
-    get_param_person_group = lambda p: [str(p.uid), str(p.groupName)] +  p.groups
+    get_param_person_group = lambda p: [str(p.uid), str(p.groupName)] + p.groups
 
     def call_trigger(entities, triggers, get_param):
         for e in entities:

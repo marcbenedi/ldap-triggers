@@ -74,9 +74,6 @@ def sync():
     modified_groups = list(filter(lambda new: len(list(filter(lambda old: new.full_eq(old), old_groups_existing))) == 0,
                                   groups_existing))
 
-    print(modified_people)
-    print(modified_groups)
-
     if (
             len(deleted_people) == 0 and
             len(added_people) == 0 and

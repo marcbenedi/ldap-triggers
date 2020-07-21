@@ -5,3 +5,4 @@ ldap_uri: ldap://ldapserver.company.com
 people: ou=employees,dc=myorg,dc=company,dc=com
 admin: cn=admin,dc=myorg,dc=company,dc=com
 groups: ou=groups,dc=myorg,dc=company,dc=com
+timeout: 60

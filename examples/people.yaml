@@ -1,6 +1,8 @@
 - !Person
-  groups: []
-  uidNumber: '10000'
-  uid: employee01
-  gidNumber: '10000'
-  homeDirectory: /home/employee01
+  uid: username
+  homeDirectory: /home/username
+  uidNumber: '10005'
+  gidNumber: '10004'
+  groupName: employee
+  groups:
+  - manager
