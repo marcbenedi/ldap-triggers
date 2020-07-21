@@ -17,6 +17,13 @@ class Person:
         if not isinstance(other, Person):
             return NotImplemented
         return (
+                self.uidNumber == other.uidNumber
+        )
+
+    def full_eq(self, other):
+        if not isinstance(other, Person):
+            return NotImplemented
+        return (
                 self.uid == other.uid and
                 self.homeDirectory == other.homeDirectory and
                 self.uidNumber == other.uidNumber and
@@ -51,7 +58,13 @@ class Group:
         if not isinstance(other, Group):
             return NotImplemented
         return (
-            # self.memberUid == other.memberUid and
+                self.gidNumber == other.gidNumber
+        )
+
+    def full_eq(self, other):
+        if not isinstance(other, Group):
+            return NotImplemented
+        return (
                 self.gidNumber == other.gidNumber and
                 self.cn == other.cn
         )

@@ -8,13 +8,15 @@ from .params import TRIGGERS_PATH
 from .log import get_logger
 
 
-def trigger(deleted_people, added_people, deleted_groups, added_groups):
+def trigger(deleted_people, added_people, deleted_groups, added_groups, modified_people, modified_groups):
     """
     Fetches the stored triggers in TRIGGERS_PATH and executes them.
     :param deleted_people: Array
     :param added_people: Array
     :param deleted_groups: Array
     :param added_groups: Array
+    :param modified_people: Array
+    :param modified_groups: Array
     :return:
     """
     logger = get_logger()
@@ -29,7 +31,7 @@ def trigger(deleted_people, added_people, deleted_groups, added_groups):
     delete_groups_triggers = list(filter(lambda f: f.startswith("delete_groups_"), triggers))
 
     get_param_person = lambda p: [str(p.uid)]
-    get_param_group = lambda g: [str(g.cn)]
+    get_param_group = lambda g: [str(g.cn), str(g.gidNumber)]
     get_param_person_group = lambda p: [str(p.uid), str(p.groupName)] +  p.groups
 
     def call_trigger(entities, triggers, get_param):
