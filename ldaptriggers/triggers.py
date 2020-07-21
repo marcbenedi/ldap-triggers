@@ -26,9 +26,11 @@ def trigger(deleted_people, added_people, deleted_groups, added_groups, modified
     # TODO: make this more efficient
     add_people_triggers = list(filter(lambda f: f.startswith("add_people_"), triggers))
     delete_people_triggers = list(filter(lambda f: f.startswith("delete_people_"), triggers))
+    modify_people_triggers = list(filter(lambda f: f.startswith("modify_people_"), triggers))
 
     add_groups_triggers = list(filter(lambda f: f.startswith("add_groups_"), triggers))
     delete_groups_triggers = list(filter(lambda f: f.startswith("delete_groups_"), triggers))
+    modify_groups_triggers = list(filter(lambda f: f.startswith("modify_groups_"), triggers))
 
     get_param_person = lambda p: [str(p.uid)]
     get_param_group = lambda g: [str(g.cn), str(g.gidNumber)]
@@ -46,6 +48,10 @@ def trigger(deleted_people, added_people, deleted_groups, added_groups, modified
                     logger.info(t + ' | ' + str(get_param(e)) + ' | ' + str(rc) + ' | ' + output.decode(ENCODING))
 
     call_trigger(deleted_people, delete_people_triggers, get_param_person)
+
     call_trigger(deleted_groups, delete_groups_triggers, get_param_group)
     call_trigger(added_groups, add_groups_triggers, get_param_group)
+    call_trigger(modified_groups, modify_groups_triggers, get_param_group)
+
     call_trigger(added_people, add_people_triggers, get_param_person_group)
+    call_trigger(modified_people, modify_people_triggers, get_param_person_group)
